@@ -4,12 +4,9 @@
 <meta charset="UTF-8" />
 <title>Happy Birthday Aislynn</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
 
 <style>
-/* ---------------- BASE ---------------- */
-
 html, body {
   margin: 0;
   height: 100%;
@@ -26,8 +23,6 @@ html, body {
   align-items: center;
 }
 
-/* ---------------- CARD ---------------- */
-
 .card {
   width: 320px;
   height: 460px;
@@ -42,9 +37,7 @@ html, body {
   transition: transform 1.2s cubic-bezier(.4,0,.2,1);
 }
 
-.card.open .inner {
-  transform: rotateY(-180deg);
-}
+.card.open .inner { transform: rotateY(-180deg); }
 
 .front, .inside {
   position: absolute;
@@ -55,13 +48,9 @@ html, body {
   overflow: hidden;
 }
 
-/* ---------------- COVER ---------------- */
-
 .front {
   background: url("./cover.png") center/cover no-repeat;
 }
-
-/* ---------------- BUTTON ---------------- */
 
 .open-btn {
   position: absolute;
@@ -76,70 +65,77 @@ html, body {
   cursor: pointer;
 }
 
-/* ---------------- INSIDE ---------------- */
-
+/* INSIDE */
 .inside {
   background: #fdf7eb;
   transform: rotateY(180deg);
-  padding: 14px 16px;   /* tighter */
+  padding: 14px 16px 10px 16px;
+  box-sizing: border-box;
   font-family: 'Allura', cursive;
+  color: #2b2b2b;
   text-align: center;
+  position: relative;
 }
 
-/* ⭐⭐ CRITICAL TIGHTENING ⭐⭐ */
-.inside p {
-  font-size: 18px;
-  line-height: 0.95;     /* big change */
-  margin: 0;             /* remove paragraph gaps */
-  transform: scaleY(0.96); /* compress font box */
+/* This container controls vertical spacing precisely */
+.inside-content{
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;                 /* ✅ THIS is the spacing between lines */
 }
 
-.signature {
-  font-size: 24px;
+/* Each line has explicit line-height and no browser paragraph behavior */
+.line{
+  font-size: 18px;          /* tweak if needed */
+  line-height: 1.03;        /* ✅ tighter line spacing */
+  margin: 0;
 }
 
-/* ---------------- FADE IN ---------------- */
+/* Title + signature sizing */
+.line.title { font-size: 22px; }
+.line.signature { font-size: 24px; margin-top: 2px; }
 
+/* Fade-in */
 .msg-line {
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity .6s ease, transform .6s ease;
+  transition: opacity .55s ease, transform .55s ease;
 }
-
 .card.open .msg-line {
   opacity: 1;
   transform: translateY(0);
 }
+.card.open .msg1 { transition-delay: .08s; }
+.card.open .msg2 { transition-delay: .18s; }
+.card.open .msg3 { transition-delay: .28s; }
+.card.open .msg4 { transition-delay: .38s; }
+.card.open .msg5 { transition-delay: .48s; }
+.card.open .msg6 { transition-delay: .58s; }
+.card.open .msg7 { transition-delay: .68s; }
 
-/* stagger */
-.card.open .msg1 { transition-delay: .1s; }
-.card.open .msg2 { transition-delay: .2s; }
-.card.open .msg3 { transition-delay: .3s; }
-.card.open .msg4 { transition-delay: .4s; }
-.card.open .msg5 { transition-delay: .5s; }
-.card.open .msg6 { transition-delay: .6s; }
-.card.open .msg7 { transition-delay: .7s; }
-
-/* ---------------- HANDWRITING ---------------- */
-
-.handwrite {
-  display: inline-block;
-  overflow: hidden;
+/* Handwriting reveal (wrap allowed) */
+.handwrite{
+  display:inline;
+  overflow:hidden;
   white-space: normal;
+  word-break: break-word;
   max-height: 0;
 }
-
-.card.open .handwrite {
+.card.open .handwrite{
+  display:inline;
   max-height: 300px;
-  transition: max-height 1s ease;
+  transition: max-height .9s ease;
 }
 
-/* ---------------- CONFETTI ---------------- */
-
+/* FX */
 .fx {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .piece {
@@ -167,10 +163,9 @@ html, body {
   10% { opacity: 1; }
   100% { transform: translateY(120vh) rotate(480deg); opacity: 0; }
 }
-
 @keyframes pop {
   20% { opacity: 1; }
-  100% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
 }
 </style>
 </head>
@@ -178,58 +173,79 @@ html, body {
 <body>
 <div class="stage">
 
-<audio id="music" loop playsinline preload="auto">
-  <source src="birthday.mp3" type="audio/mpeg">
-</audio>
+  <audio id="music" loop playsinline preload="auto">
+    <source src="birthday.mp3" type="audio/mpeg">
+  </audio>
 
-<div class="card" id="card" onclick="toggleCard()">
-  <div class="inner">
+  <div class="card" id="card" onclick="toggleCard()">
+    <div class="inner">
 
-    <div class="front">
-      <button class="open-btn" onclick="toggleCard(event)">Open</button>
-    </div>
+      <div class="front">
+        <button class="open-btn" onclick="toggleCard(event)">Open</button>
+      </div>
 
-    <div class="inside">
-      <div class="fx" id="fx"></div>
+      <div class="inside">
+        <div class="fx" id="fx"></div>
 
-      <p class="msg-line msg1"><span class="handwrite">Happy Birthday, Aislynn #24,</span></p>
-      <p class="msg-line msg2"><span class="handwrite">I love you very much.</span></p>
-      <p class="msg-line msg3"><span class="handwrite">May 2026 bring you health and true joy in your heart.</span></p>
-      <p class="msg-line msg4"><span class="handwrite">I'm so excited for what this year will bring you!</span></p>
-      <p class="msg-line msg5"><span class="handwrite">You have worked so hard and suffered so much — this is your year to accomplish your goals!</span></p>
-      <p class="msg-line msg6"><span class="handwrite">You have made so much progress. I'm very proud of you!</span></p>
-      <p class="msg-line msg7 signature"><span class="handwrite">Love,<br>Dad</span></p>
+        <div class="inside-content">
+          <div class="line title msg-line msg1"><span class="handwrite">Happy Birthday, Aislynn #24,</span></div>
+          <div class="line msg-line msg2"><span class="handwrite">I love you very much.</span></div>
+          <div class="line msg-line msg3"><span class="handwrite">May 2026 bring you health and true joy in your heart.</span></div>
+          <div class="line msg-line msg4"><span class="handwrite">I'm so excited for what this year will bring you!</span></div>
+          <div class="line msg-line msg5"><span class="handwrite">You have worked so hard and suffered so much — this is your year to accomplish your goals!</span></div>
+          <div class="line msg-line msg6"><span class="handwrite">You have made so much progress. I'm very proud of you!</span></div>
+          <div class="line signature msg-line msg7"><span class="handwrite">Love,<br>Dad</span></div>
+        </div>
+
+      </div>
 
     </div>
   </div>
 </div>
 
-</div>
-
 <script>
-function burstFX(){
-  const fx=document.getElementById('fx');
-  fx.innerHTML='';
-  const colors=['#ff69b4','#87cefa','#ffd700','#98fb98','#dda0dd'];
+function burstFX() {
+  const fx = document.getElementById('fx');
+  if (!fx) return;
+  fx.innerHTML = '';
 
-  for(let i=0;i<20;i++){
-    const c=document.createElement('div');
-    c.className='piece';
-    c.style.left=Math.random()*100+'%';
-    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+  const colors = ['#ff69b4','#87cefa','#ffd700','#98fb98','#dda0dd'];
+
+  for (let i = 0; i < 18; i++) {
+    const c = document.createElement('div');
+    c.className = 'piece';
+    c.style.left = Math.random() * 100 + '%';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDelay = Math.random() * 180 + 'ms';
+    c.style.width = (6 + Math.random() * 6) + 'px';
+    c.style.height = (10 + Math.random() * 10) + 'px';
     fx.appendChild(c);
+  }
+
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement('div');
+    s.className = 'spark';
+    s.style.left = (30 + Math.random() * 40) + '%';
+    s.style.top  = (10 + Math.random() * 30) + '%';
+    s.style.animationDelay = Math.random() * 180 + 'ms';
+    fx.appendChild(s);
   }
 }
 
 function toggleCard(e){
-  if(e){e.preventDefault();e.stopPropagation();}
-  const card=document.getElementById('card');
-  const opening=!card.classList.contains('open');
+  if(e){ e.preventDefault(); e.stopPropagation(); }
+
+  const card = document.getElementById('card');
+  const opening = !card.classList.contains('open');
   card.classList.toggle('open');
+
   if(opening) burstFX();
 
-  const music=document.getElementById('music');
-  if(music.paused){music.volume=.35;music.play();}
+  const music = document.getElementById('music');
+  if(music && music.paused){
+    music.volume = 0.35;
+    music.play().catch(()=>{});
+  }
 }
 </script>
 
