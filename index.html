@@ -191,8 +191,70 @@ html, body {
 
       <!-- FRONT -->
       <div class="front">
-        <button class="open-btn" onclick="toggleCard(event)">Op
+        <button class="open-btn" onclick="toggleCard(event)">Open</button>
+      </div>
 
+      <!-- INSIDE -->
+      <div class="inside">
+        <div class="fx" id="fx"></div>
+
+        <p class="msg-line"><span class="handwrite">Happy Birthday, Aislynn #24,</span></p>
+        <p class="msg-line"><span class="handwrite">I love you very much.</span></p>
+        <p class="msg-line"><span class="handwrite">May 2026 bring you health and true joy in your heart.</span></p>
+        <p class="msg-line"><span class="handwrite">I'm so excited for what this year will bring you!</span></p>
+        <p class="msg-line"><span class="handwrite">You have worked so hard and suffered so much — this is your year to accomplish your goals!</span></p>
+        <p class="msg-line"><span class="handwrite">You have made so much progress. I'm very proud of you!</span></p>
+        <p class="msg-line signature"><span class="handwrite">Love,<br>Dad</span></p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function burstFX() {
+  const fx = document.getElementById('fx');
+  fx.innerHTML = '';
+
+  const colors = ['#ff69b4','#87cefa','#ffd700','#98fb98','#dda0dd'];
+
+  for (let i = 0; i < 24; i++) {
+    const c = document.createElement('div');
+    c.className = 'piece';
+    c.style.left = Math.random()*100 + '%';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDelay = Math.random()*200 + 'ms';
+    fx.appendChild(c);
+  }
+
+  for (let i = 0; i < 10; i++) {
+    const s = document.createElement('div');
+    s.className = 'spark';
+    s.style.left = (30+Math.random()*40) + '%';
+    s.style.top = (10+Math.random()*30) + '%';
+    fx.appendChild(s);
+  }
+}
+
+function toggleCard(e){
+  if(e){e.preventDefault();e.stopPropagation();}
+
+  const card = document.getElementById('card');
+  const opening = !card.classList.contains('open');
+  card.classList.toggle('open');
+
+  if(opening) burstFX();
+
+  const music = document.getElementById('music');
+  if(music.paused){
+    music.volume = 0.35;
+    music.play();
+  }
+}
+</script>
+
+</body>
+</html>
 
 
 
