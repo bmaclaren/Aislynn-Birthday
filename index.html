@@ -1,42 +1,40 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>HappyBirthday</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<title>Happy Birthday Aislynn</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
 
 <style>
-/* Make the viewport stable so the card doesn't "drop" on tap */
+/* ---------------- BASE LAYOUT ---------------- */
+
 html, body {
   margin: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: linear-gradient(#f7f3ee, #efe7dc);
   font-family: Georgia, serif;
-  background: #f4f1ec;
 }
 
-/* Fixed stage prevents flex re-centering jitter */
 .stage {
   position: fixed;
   inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100svh; /* stable viewport height on mobile */
+  height: 100svh;
 }
 
-/* Card */
+/* ---------------- CARD ---------------- */
+
 .card {
   width: 320px;
   height: 460px;
   perspective: 1200px;
-  perspective-origin: 50% 50%;
   position: relative;
-  transform: translateZ(0);
 }
 
 .inner {
@@ -44,9 +42,7 @@ html, body {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transform-origin: 50% 50%;
-  transition: transform 1.2s ease-in-out;
-  will-change: transform;
+  transition: transform 1.2s cubic-bezier(.4,0,.2,1);
 }
 
 .card.open .inner {
@@ -58,20 +54,21 @@ html, body {
   inset: 0;
   backface-visibility: hidden;
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.45);
   overflow: hidden;
-  transform: translateZ(0);
 }
 
-/* FRONT COVER */
+/* ---------------- COVER IMAGE ---------------- */
+
 .front {
-  background-image: url("Cover.png");
+  background-image: url("./Cover.png"); /* your file */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* OPEN BUTTON — smaller and below */
+/* ---------------- OPEN BUTTON ---------------- */
+
 .open-btn {
   position: absolute;
   bottom: 16px;
@@ -79,52 +76,117 @@ html, body {
   transform: translateX(-50%);
   padding: 6px 16px;
   font-size: 13px;
-  font-family: Georgia, serif;
-  background: rgba(255,255,255,0.82);
-  color: #333;
-  border: none;
+  background: rgba(255,255,255,0.85);
   border-radius: 16px;
+  border: none;
   cursor: pointer;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
-.open-btn:hover {
-  background: rgba(255,255,255,0.95);
-}
+/* ---------------- INSIDE PAGE ---------------- */
 
-.open-btn:focus {
-  outline: none;
-}
-
-/* INSIDE */
 .inside {
   background: #fdf7eb;
-  transform: rotateY(180deg) translateZ(0);
+  transform: rotateY(180deg);
   padding: 26px;
   box-sizing: border-box;
   font-family: 'Allura', cursive;
+  text-align: center;
   color: #2b2b2b;
 }
 
 .inside p {
-  font-size: 24px;
-  line-height: 1.0;
+  font-size: 23px;
+  line-height: 1.35;
+  margin-bottom: 14px;
+}
+
+/* ---------------- FADE IN TEXT ---------------- */
+
+.msg-line {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+
+.card.open .msg-line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.msg-line:nth-child(1){transition-delay:.1s;}
+.msg-line:nth-child(2){transition-delay:.25s;}
+.msg-line:nth-child(3){transition-delay:.4s;}
+.msg-line:nth-child(4){transition-delay:.55s;}
+.msg-line:nth-child(5){transition-delay:.7s;}
+.msg-line:nth-child(6){transition-delay:.85s;}
+.msg-line:nth-child(7){transition-delay:1s;}
+
+/* ---------------- HANDWRITING EFFECT ---------------- */
+
+.handwrite {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 0;
+}
+
+.card.open .handwrite {
+  max-width: 100%;
+  transition: max-width 1.3s ease;
+}
+
+/* ---------------- SPARKLES / CONFETTI ---------------- */
+
+.fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.piece {
+  position: absolute;
+  top: -10%;
+  width: 8px;
+  height: 12px;
+  opacity: 0;
+  border-radius: 2px;
+  animation: fall 1400ms ease-in forwards;
+}
+
+.spark {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: gold;
+  box-shadow: 0 0 10px gold;
+  opacity: 0;
+  animation: pop 900ms ease-out forwards;
+}
+
+@keyframes fall {
+  10%{opacity:1;}
+  100%{transform:translateY(120vh) rotate(500deg);opacity:0;}
+}
+
+@keyframes pop {
+  20%{opacity:1;}
+  100%{transform:scale(1.4);opacity:0;}
 }
 
 .signature {
   font-size: 30px;
-  margin-top: 22px;
 }
 </style>
 </head>
 
 <body>
+
 <div class="stage">
 
-  <!-- Background Music -->
-  <audio id="music" loop preload="auto">
+  <!-- Music -->
+  <audio id="music" loop playsinline preload="auto">
     <source src="birthday.mp3" type="audio/mpeg">
   </audio>
 
@@ -138,18 +200,15 @@ html, body {
 
       <!-- INSIDE -->
       <div class="inside">
-        <p style="font-size:34px;">Dear Aislynn!</p>
+        <div class="fx" id="fx"></div>
 
-        <p>
-          Happy Birthday #24! 
- 	<p>
-        I love you very much,<br>
-		You are so very special! 
-		What an amazing young woman
-		You have become!  
-	<p>
-          Love, Dad
-        </p>
+        <p class="msg-line"><span class="handwrite">Happy Birthday, Aislynn #24,</span></p>
+        <p class="msg-line"><span class="handwrite">I love you very much.</span></p>
+        <p class="msg-line"><span class="handwrite">May 2026 bring you health and true joy in your heart.</span></p>
+        <p class="msg-line"><span class="handwrite">I'm so excited for what this year will bring you!</span></p>
+        <p class="msg-line"><span class="handwrite">You have worked so hard and suffered so much. This is your year to accomplish your goals!</span></p>
+        <p class="msg-line"><span class="handwrite">You have made so much progress. I'm very proud of you!</span></p>
+        <p class="msg-line signature"><span class="handwrite">Love,<br>Dad</span></p>
       </div>
 
     </div>
@@ -158,27 +217,50 @@ html, body {
 </div>
 
 <script>
-function toggleCard(e) {
-  // If the button was clicked, prevent it from also triggering the card click twice
-  if (e) {
-    e.preventDefault();
-    e.stopPropagation();
+function burstFX() {
+  const fx = document.getElementById('fx');
+  fx.innerHTML = '';
+
+  const colors = ['#ff69b4','#87cefa','#ffd700','#98fb98','#dda0dd'];
+
+  for (let i = 0; i < 24; i++) {
+    const el = document.createElement('div');
+    el.className = 'piece';
+    el.style.left = Math.random()*100 + '%';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDelay = Math.random()*200 + 'ms';
+    fx.appendChild(el);
   }
 
+  for (let i = 0; i < 10; i++) {
+    const sp = document.createElement('div');
+    sp.className = 'spark';
+    sp.style.left = (30+Math.random()*40) + '%';
+    sp.style.top = (10+Math.random()*30) + '%';
+    sp.style.animationDelay = Math.random()*200 + 'ms';
+    fx.appendChild(sp);
+  }
+}
+
+function toggleCard(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+
   const card = document.getElementById('card');
+  const opening = !card.classList.contains('open');
   card.classList.toggle('open');
 
+  if (opening) burstFX();
+
   const music = document.getElementById('music');
-  if (music && music.paused) {
+  if (music.paused) {
     music.volume = 0.35;
-    music.play().catch(() => {
-      // Some mobile browsers may require a second tap
-    });
+    music.play();
   }
 }
 </script>
 
 </body>
 </html>
+
 
 
