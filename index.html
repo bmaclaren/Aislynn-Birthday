@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <title>Happy Birthday Aislynn</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
 
 <style>
@@ -39,9 +38,7 @@ html, body {
   transition: transform 1.2s cubic-bezier(.4,0,.2,1);
 }
 
-.card.open .inner {
-  transform: rotateY(-180deg);
-}
+.card.open .inner { transform: rotateY(-180deg); }
 
 .front, .inside {
   position: absolute;
@@ -53,9 +50,7 @@ html, body {
 }
 
 /* COVER */
-.front {
-  background: url("./cover.png") center/cover no-repeat;
-}
+.front { background: url("./cover.png") center/cover no-repeat; }
 
 /* BUTTON */
 .open-btn {
@@ -75,65 +70,62 @@ html, body {
 .inside {
   background: #fdf7eb;
   transform: rotateY(180deg);
-  padding: 18px 18px 16px 18px; /* slightly tighter */
+  padding: 14px 16px 10px 16px;   /* ✅ less padding, especially bottom */
   box-sizing: border-box;
   font-family: 'Allura', cursive;
   text-align: center;
   color: #2b2b2b;
 }
 
-/* A wrapper so we can measure content height */
-.inside-content {
-  position: relative;
-  z-index: 2;
-}
+/* wrapper for measurement */
+.inside-content { position: relative; z-index: 2; }
 
-/* default font sizes (JS will scale if needed) */
+/* ✅ tighter vertical rhythm */
 .inside p {
-  font-size: 20px;
-  line-height: 1.18;
-  margin: 0 0 8px 0;
+  font-size: 19px;              /* slightly smaller base */
+  line-height: 1.10;            /* ✅ tighter */
+  margin: 0 0 6px 0;            /* ✅ less margin between paragraphs */
 }
 
+/* make signature tighter too */
 .signature {
-  font-size: 26px;
-  margin-top: 6px;
+  font-size: 25px;
+  margin-top: 4px;
+  line-height: 1.05;
 }
 
 /* Fade-in */
 .msg-line {
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity .7s ease, transform .7s ease;
+  transform: translateY(6px);
+  transition: opacity .6s ease, transform .6s ease;
 }
 .card.open .msg-line {
   opacity: 1;
   transform: translateY(0);
 }
+.card.open .msg1 { transition-delay: .08s; }
+.card.open .msg2 { transition-delay: .20s; }
+.card.open .msg3 { transition-delay: .32s; }
+.card.open .msg4 { transition-delay: .44s; }
+.card.open .msg5 { transition-delay: .56s; }
+.card.open .msg6 { transition-delay: .68s; }
+.card.open .msg7 { transition-delay: .80s; }
 
-/* Stagger (note: because fx is first child inside .inside, we stagger by class instead of nth-child) */
-.card.open .msg1 { transition-delay: .10s; }
-.card.open .msg2 { transition-delay: .24s; }
-.card.open .msg3 { transition-delay: .38s; }
-.card.open .msg4 { transition-delay: .52s; }
-.card.open .msg5 { transition-delay: .66s; }
-.card.open .msg6 { transition-delay: .80s; }
-.card.open .msg7 { transition-delay: .94s; }
-
-/* Handwriting reveal that WRAPS */
-.handwrite {
-  display: inline-block;
-  overflow: hidden;
-  white-space: normal;
-  word-break: break-word;
-  max-height: 0;
+/* Handwriting (wrap + reveal) */
+.handwrite{
+  display:inline-block;
+  overflow:hidden;
+  white-space:normal;
+  word-break:break-word;
+  max-height:0;
 }
-.card.open .handwrite {
-  max-height: 300px;
-  transition: max-height 1.05s ease;
+.card.open .handwrite{
+  max-height:320px;
+  transition:max-height .95s ease;
 }
 
-/* FX overlay */
+/* FX */
 .fx {
   position: absolute;
   inset: 0;
@@ -167,24 +159,13 @@ html, body {
   10% { opacity: 1; }
   100% { transform: translateY(120vh) rotate(480deg); opacity: 0; }
 }
-
 @keyframes pop {
   20% { opacity: 1; }
-  100% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
 }
 
-/* Fallback: if it must scroll, make it feel nice */
-.inside.scroll {
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.inside.scroll::-webkit-scrollbar {
-  width: 8px;
-}
-.inside.scroll::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,.15);
-  border-radius: 10px;
-}
+/* fallback scroll (should be unnecessary now, but safe) */
+.inside.scroll { overflow: auto; -webkit-overflow-scrolling: touch; }
 </style>
 </head>
 
@@ -198,12 +179,10 @@ html, body {
   <div class="card" id="card" onclick="toggleCard()">
     <div class="inner">
 
-      <!-- FRONT -->
       <div class="front">
         <button class="open-btn" onclick="toggleCard(event)">Open</button>
       </div>
 
-      <!-- INSIDE -->
       <div class="inside" id="inside">
         <div class="fx" id="fx"></div>
 
@@ -220,7 +199,6 @@ html, body {
 
     </div>
   </div>
-
 </div>
 
 <script>
@@ -231,73 +209,60 @@ function burstFX() {
 
   const colors = ['#ff69b4','#87cefa','#ffd700','#98fb98','#dda0dd'];
 
-  for (let i = 0; i < 22; i++) {
+  for (let i = 0; i < 20; i++) {
     const c = document.createElement('div');
     c.className = 'piece';
     c.style.left = Math.random() * 100 + '%';
     c.style.background = colors[Math.floor(Math.random() * colors.length)];
-    c.style.animationDelay = Math.random() * 220 + 'ms';
+    c.style.animationDelay = Math.random() * 200 + 'ms';
     c.style.width = (6 + Math.random() * 6) + 'px';
     c.style.height = (10 + Math.random() * 10) + 'px';
     fx.appendChild(c);
   }
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 9; i++) {
     const s = document.createElement('div');
     s.className = 'spark';
     s.style.left = (30 + Math.random() * 40) + '%';
     s.style.top  = (10 + Math.random() * 30) + '%';
-    s.style.animationDelay = Math.random() * 220 + 'ms';
+    s.style.animationDelay = Math.random() * 200 + 'ms';
     fx.appendChild(s);
   }
 }
 
-/* Auto-fit text so it never cuts off */
+/* Auto-fit: now it shrinks more if needed */
 function fitInsideText() {
   const inside = document.getElementById('inside');
   const content = document.getElementById('insideContent');
   if (!inside || !content) return;
 
-  // remove scroll mode before measuring
   inside.classList.remove('scroll');
 
-  const paragraphs = content.querySelectorAll('p');
-  const baseP = 20;        // starting font
-  const minP  = 16;        // don't go smaller than this
-  const baseSig = 26;
+  const ps = content.querySelectorAll('p');
+  let pSize = 19;     // base
+  let sigSize = 25;
+  const minP = 14;    // ✅ allow smaller if needed
 
-  let pSize = baseP;
-  let sigSize = baseSig;
-
-  // apply sizes
-  function applySizes() {
-    paragraphs.forEach(p => {
-      if (p.classList.contains('signature')) {
-        p.style.fontSize = sigSize + 'px';
-      } else {
-        p.style.fontSize = pSize + 'px';
-      }
+  function apply() {
+    ps.forEach(p => {
+      if (p.classList.contains('signature')) p.style.fontSize = sigSize + 'px';
+      else p.style.fontSize = pSize + 'px';
     });
   }
 
-  applySizes();
+  apply();
 
-  // Available height inside the inside panel (minus a tiny safety)
-  const available = inside.clientHeight - 6;
+  const available = inside.clientHeight - 2;
 
-  // Try shrinking until it fits or we hit minimum
   let guard = 0;
-  while (content.scrollHeight > available && pSize > minP && guard < 50) {
+  while (content.scrollHeight > available && pSize > minP && guard < 80) {
     pSize -= 1;
-    sigSize = Math.max(20, sigSize - 1);
-    applySizes();
+    sigSize = Math.max(18, sigSize - 1);
+    apply();
     guard++;
   }
 
-  // If still too tall, allow scrolling as fallback
-  if (content.scrollHeight > available) {
-    inside.classList.add('scroll');
-  }
+  if (content.scrollHeight > available) inside.classList.add('scroll');
 }
 
 function toggleCard(e) {
@@ -309,9 +274,7 @@ function toggleCard(e) {
 
   if (opening) {
     burstFX();
-
-    // Wait a tick so layout is stable, then fit
-    setTimeout(fitInsideText, 50);
+    setTimeout(fitInsideText, 60);
   }
 
   const music = document.getElementById('music');
@@ -321,16 +284,12 @@ function toggleCard(e) {
   }
 }
 
-// If the user rotates the phone, refit
 window.addEventListener('resize', () => {
   const card = document.getElementById('card');
-  if (card && card.classList.contains('open')) {
-    fitInsideText();
-  }
+  if (card && card.classList.contains('open')) fitInsideText();
 });
 </script>
 
 </body>
 </html>
-
 
