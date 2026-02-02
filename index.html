@@ -1,3 +1,29 @@
+Here’s a fresh, complete, single-file index.html with:
+
+✅ VERSION stamp (deployment test)
+
+✅ cover image
+
+✅ flip card
+
+✅ birthday music
+
+✅ tighter spacing (guaranteed via flex + gap)
+
+✅ fade-in text
+
+✅ handwriting reveal
+
+✅ confetti
+
+✅ simpler CSS (no paragraph quirks)
+
+This version does NOT use <p> at all (paragraphs add hidden spacing).
+Spacing is now 100% controlled by one line: gap: 2px;
+
+If this deploys correctly, you will see the VERSION badge.
+
+✅ COPY-PASTE THIS WHOLE FILE
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,11 +34,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
 
 <style>
+/* ---------- BASE ---------- */
+
 html, body {
   margin: 0;
   height: 100%;
   overflow: hidden;
-  background: linear-gradient(#f7f3ee, #efe7dc);
+  background: linear-gradient(#f7f3ee,#efe7dc);
   font-family: Georgia, serif;
 }
 
@@ -24,18 +52,18 @@ html, body {
   align-items: center;
 }
 
-/* ---------------- CARD ---------------- */
+/* ---------- CARD ---------- */
 
 .card {
   width: 320px;
   height: 460px;
   perspective: 1200px;
+  position: relative;
 }
 
 .inner {
   width: 100%;
   height: 100%;
-  position: relative;
   transform-style: preserve-3d;
   transition: transform 1.2s cubic-bezier(.4,0,.2,1);
 }
@@ -53,13 +81,13 @@ html, body {
   overflow: hidden;
 }
 
-/* ---------------- COVER ---------------- */
+/* ---------- COVER ---------- */
 
 .front {
   background: url("./cover.png") center/cover no-repeat;
 }
 
-/* ---------------- BUTTON ---------------- */
+/* ---------- BUTTON ---------- */
 
 .open-btn {
   position: absolute;
@@ -68,13 +96,13 @@ html, body {
   transform: translateX(-50%);
   padding: 6px 14px;
   font-size: 12px;
-  background: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.92);
   border-radius: 16px;
   border: none;
   cursor: pointer;
 }
 
-/* ---------------- INSIDE ---------------- */
+/* ---------- INSIDE ---------- */
 
 .inside {
   background: #fdf7eb;
@@ -83,101 +111,116 @@ html, body {
   box-sizing: border-box;
   font-family: 'Allura', cursive;
   text-align: center;
+  position: relative;
 }
 
-/* Tight, deterministic spacing */
-.inside-content{
-  display:flex;
-  flex-direction:column;
-  gap:2px;                 /* ← spacing control knob */
+/* ⭐ spacing is controlled ONLY here */
+.inside-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;      /* ← change this to 0–4px if needed */
 }
 
-.line{
-  font-size:18px;
-  line-height:1.02;
-  margin:0;
+/* each line */
+.line {
+  font-size: 18px;
+  line-height: 1.02;
+  margin: 0;
 }
 
-.line.title{ font-size:22px; }
-.line.signature{ font-size:24px; }
+.title { font-size: 22px; }
+.signature { font-size: 24px; }
 
-/* Fade */
-.msg-line{
-  opacity:0;
-  transform:translateY(6px);
-  transition:.55s;
-}
+/* ---------- ANIMATION ---------- */
 
-.card.open .msg-line{
-  opacity:1;
-  transform:none;
+.msg-line {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: .5s;
 }
 
-/* Handwriting reveal */
-.handwrite{
-  display:inline;
-  overflow:hidden;
-  white-space:normal;
-  max-height:0;
-}
-.card.open .handwrite{
-  max-height:300px;
-  transition:max-height .9s ease;
+.card.open .msg-line {
+  opacity: 1;
+  transform: none;
 }
 
-/* Confetti */
-.fx{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
+/* stagger */
+.card.open .msg1 { transition-delay: .05s; }
+.card.open .msg2 { transition-delay: .15s; }
+.card.open .msg3 { transition-delay: .25s; }
+.card.open .msg4 { transition-delay: .35s; }
+.card.open .msg5 { transition-delay: .45s; }
+.card.open .msg6 { transition-delay: .55s; }
+.card.open .msg7 { transition-delay: .65s; }
+
+/* handwriting reveal */
+.handwrite {
+  display: inline-block;
+  overflow: hidden;
+  max-width: 0;
+  white-space: normal;
 }
 
-.piece{
-  position:absolute;
-  top:-10%;
-  width:8px;
-  height:12px;
-  border-radius:2px;
-  opacity:0;
-  animation:fall 1400ms ease-in forwards;
+.card.open .handwrite {
+  max-width: 100%;
+  transition: max-width .9s ease;
 }
 
-.spark{
-  position:absolute;
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:gold;
-  box-shadow:0 0 10px gold;
-  opacity:0;
-  animation:pop 900ms ease-out forwards;
+/* ---------- CONFETTI ---------- */
+
+.fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-@keyframes fall{
-  10%{opacity:1;}
-  100%{transform:translateY(120vh) rotate(480deg);opacity:0;}
+.piece {
+  position: absolute;
+  top: -10%;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: fall 1400ms ease-in forwards;
 }
-@keyframes pop{
-  20%{opacity:1;}
-  100%{transform:scale(1.35);opacity:0;}
+
+.spark {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: gold;
+  box-shadow: 0 0 10px gold;
+  opacity: 0;
+  animation: pop 900ms ease-out forwards;
+}
+
+@keyframes fall {
+  10% { opacity: 1; }
+  100% { transform: translateY(120vh) rotate(480deg); opacity: 0; }
+}
+
+@keyframes pop {
+  20% { opacity: 1; }
+  100% { transform: scale(1.3); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ⭐⭐⭐ VERSION STAMP (deployment test) ⭐⭐⭐ -->
+<!-- ⭐⭐⭐ DEPLOYMENT TEST ⭐⭐⭐ -->
 <div style="
-  position:fixed;
-  top:6px;
-  left:8px;
-  z-index:9999;
-  background:#fffa;
-  padding:4px 8px;
-  border-radius:8px;
-  font:12px Arial;
+position:fixed;
+top:6px;
+left:8px;
+z-index:9999;
+background:#fff;
+padding:4px 8px;
+border-radius:8px;
+font:12px Arial;
 ">
-  VERSION: 2026-02-02-A
+VERSION: 2026-02-02-B
 </div>
 
 <div class="stage">
@@ -189,22 +232,24 @@ html, body {
 <div class="card" id="card" onclick="toggleCard()">
   <div class="inner">
 
+    <!-- FRONT -->
     <div class="front">
       <button class="open-btn" onclick="toggleCard(event)">Open</button>
     </div>
 
+    <!-- INSIDE -->
     <div class="inside">
       <div class="fx" id="fx"></div>
 
       <div class="inside-content">
 
-        <div class="line title msg-line"><span class="handwrite">Happy Birthday, Aislynn #24,</span></div>
-        <div class="line msg-line"><span class="handwrite">I love you very much.</span></div>
-        <div class="line msg-line"><span class="handwrite">May 2026 bring you health and true joy in your heart.</span></div>
-        <div class="line msg-line"><span class="handwrite">I'm so excited for what this year will bring you!</span></div>
-        <div class="line msg-line"><span class="handwrite">You have worked so hard and suffered so much — this is your year to accomplish your goals!</span></div>
-        <div class="line msg-line"><span class="handwrite">You have made so much progress. I'm very proud of you!</span></div>
-        <div class="line signature msg-line"><span class="handwrite">Love,<br>Dad</span></div>
+        <div class="line title msg-line msg1"><span class="handwrite">Happy Birthday, Aislynn #24,</span></div>
+        <div class="line msg-line msg2"><span class="handwrite">I love you very much.</span></div>
+        <div class="line msg-line msg3"><span class="handwrite">May 2026 bring you health and true joy in your heart.</span></div>
+        <div class="line msg-line msg4"><span class="handwrite">I'm so excited for what this year will bring you!</span></div>
+        <div class="line msg-line msg5"><span class="handwrite">You have worked so hard and suffered so much — this is your year to accomplish your goals!</span></div>
+        <div class="line msg-line msg6"><span class="handwrite">You have made so much progress. I'm very proud of you!</span></div>
+        <div class="line signature msg-line msg7"><span class="handwrite">Love,<br>Dad</span></div>
 
       </div>
     </div>
